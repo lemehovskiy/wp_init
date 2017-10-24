@@ -18,8 +18,8 @@
       <file leaf-file-name="wp-init.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/wp-init.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="25" column="41" lean-forward="true" selection-start-line="25" selection-start-column="41" selection-end-line="25" selection-end-column="41" />
+            <state relative-caret-position="480">
+              <caret line="33" column="24" lean-forward="false" selection-start-line="33" selection-start-column="24" selection-end-line="33" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -225,12 +225,12 @@
       <updated>1508258654572</updated>
       <workItem from="1508258656048" duration="3897000" />
       <workItem from="1508778796599" duration="2401000" />
-      <workItem from="1508781513543" duration="2538000" />
+      <workItem from="1508781513543" duration="3171000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8836000" />
+    <option name="totallyTimeSpent" value="9469000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="13" y="25" width="1865" height="990" extended-state="0" />
@@ -304,8 +304,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/wp-init.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="25" column="41" lean-forward="true" selection-start-line="25" selection-start-column="41" selection-end-line="25" selection-end-column="41" />
+        <state relative-caret-position="480">
+          <caret line="33" column="24" lean-forward="false" selection-start-line="33" selection-start-column="24" selection-end-line="33" selection-end-column="24" />
           <folding />
         </state>
       </provider>

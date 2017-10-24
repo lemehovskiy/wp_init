@@ -37,6 +37,6 @@ function delete_base_plugins()
 
 
 //dowload_wp();
-//extract_wp();
+extract_wp();
 //delete_base_themes();
-delete_base_plugins();
+//delete_base_plugins();
