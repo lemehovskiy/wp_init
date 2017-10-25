@@ -1,12 +1,17 @@
 {
   "project_name": "wp-test-project",
-
-  "webservice1": {
-    "api_key": "kD3l@gs56jsDG#s9@Fgj4839",
-    "api_secret": "SG353Ge245gVw3Ht3eye@309pDeg"
+  "local-plugins": {
+    "acf-repeater": true,
+    "advanced-custom-fields-pro": true
   },
-  "webservice2": {
-    "api_key": "DG3dfsg3@gs9@Fgj4ddh$drg",
-    "api_secret": "DplR9ne245HfBEw#HNs0dsfh"
+  "remote-plugins": {
+    "contact-form-7": {
+      "url": "https://downloads.wordpress.org/plugin/contact-form-7.4.9.zip",
+      "install": true
+    },
+    "simple-custom-post-order": {
+      "url": "https://downloads.wordpress.org/plugin/simple-custom-post-order.zip",
+      "install": true
+    }
   }
 }
