@@ -15,7 +15,7 @@ $base_plugins = array(
 $options = getopt("f:i::");
 
 
-$config_json = file_get_contents("config.json");
+$config_json = file_get_contents("wp-init-config.json");
 
 $config = json_decode($config_json, true);
 
@@ -130,7 +130,7 @@ function create_project_folder($config)
         system('mkdir -p ' . $path);
 
         //create config file
-        $fp = fopen($path . '/config.json', 'w');
+        $fp = fopen($path . '/wp-init-config.json', 'w');
         fwrite($fp, json_encode($config, JSON_PRETTY_PRINT));
         fclose($fp);
 
