@@ -68,13 +68,13 @@ function delete_starter_theme_archive()
 }
 
 
-dowload_wp();
-extract_wp();
-delete_wp_archive();
-delete_base_themes($base_themes);
-delete_base_plugins($base_plugins);
-
-
-download_starter_theme();
-extract_starter_theme($init_settings);
-delete_starter_theme_archive();
+//dowload_wp();
+//extract_wp();
+//delete_wp_archive();
+//delete_base_themes($base_themes);
+//delete_base_plugins($base_plugins);
+//
+//
+//download_starter_theme();
+//extract_starter_theme($init_settings);
+//delete_starter_theme_archive();
