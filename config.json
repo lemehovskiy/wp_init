@@ -1,8 +1,14 @@
 {
   "project_name": "wp-test-project",
   "local-plugins": {
-    "acf-repeater": true,
-    "advanced-custom-fields-pro": true
+    "acf-repeater": {
+      "path": "wp-init-src/plugins/acf-repeater",
+      "install": true
+    },
+    "advanced-custom-fields-pro": {
+      "path": "wp-init-src/plugins/advanced-custom-fields-pro",
+      "install": true
+    }
   },
   "remote-plugins": {
     "contact-form-7": {
