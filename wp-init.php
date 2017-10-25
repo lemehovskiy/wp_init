@@ -35,8 +35,37 @@ else if (isset($options['i'])) {
     download_starter_theme();
     extract_starter_theme($config);
     delete_starter_theme_archive();
+
+    install_plugins($config);
 }
 
+else {
+
+
+}
+
+
+function install_plugins($config){
+    //copy local plugins
+    foreach ($config['local-plugins'] as $plugin) {
+        if ($plugin['install']) {
+            system('cp -r ' . $plugin['path'] .' '. 'wp-content/plugins');
+        }
+    }
+
+    //download remote plugins
+    foreach ($config['remote-plugins'] as $plugin) {
+        if ($plugin['install']) {
+
+            //download
+            system('curl -L -o remote-plugin.zip ' . $plugin['url']);
+
+            //extract and remove
+            system('tar -xvf remote-plugin.zip --directory wp-content/plugins && rm remote-plugin.zip');
+
+        }
+    }
+}
 
 
 function dowload_wp()
