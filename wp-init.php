@@ -1,17 +1,5 @@
 <?php
 
-$base_themes = array(
-    'wp-content/themes/twentyfifteen',
-    'wp-content/themes/twentyseventeen',
-    'wp-content/themes/twentysixteen'
-);
-
-$base_plugins = array(
-    'wp-content/plugins/akismet',
-    'wp-content/plugins/hello.php'
-);
-
-
 $options = getopt("f:i::");
 
 
@@ -29,8 +17,8 @@ else if (isset($options['i'])) {
     dowload_wp();
     extract_wp();
     delete_wp_archive();
-    delete_base_themes($base_themes);
-    delete_base_plugins($base_plugins);
+
+    remove_files($options);
 
     download_starter_theme();
     extract_starter_theme($config);
@@ -86,20 +74,14 @@ function delete_wp_archive()
 }
 
 
-function delete_base_themes($base_themes)
+function remove_files($config)
 {
-    foreach ($base_themes as $theme) {
-        system('rm -rf ' . $theme);
+    foreach ($config['remove_files'] as $file) {
+        system('rm -rf ' . $file);
     }
 }
 
 
-function delete_base_plugins($base_plugins)
-{
-    foreach ($base_plugins as $plugin) {
-        system('rm -rf ' . $plugin);
-    }
-}
 
 function download_starter_theme()
 {

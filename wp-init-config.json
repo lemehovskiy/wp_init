@@ -19,5 +19,13 @@
       "url": "https://downloads.wordpress.org/plugin/simple-custom-post-order.zip",
       "install": true
     }
-  }
+  },
+  "remove_files": [
+    "wp-content/themes/twentyfifteen",
+    "wp-content/themes/twentyseventeen",
+    "wp-content/themes/twentysixteen",
+    "wp-content/plugins/akismet",
+    "wp-content/plugins/hello.php"
+  ]
+
 }
