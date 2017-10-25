@@ -18,7 +18,7 @@ else if (isset($options['i'])) {
     extract_wp();
     delete_wp_archive();
 
-    remove_files($options);
+    remove_files($config);
 
     download_starter_theme();
     extract_starter_theme($config);
@@ -28,7 +28,7 @@ else if (isset($options['i'])) {
 }
 
 else {
-
+    remove_files($config);
 
 }
 
