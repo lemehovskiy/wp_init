@@ -1,11 +1,5 @@
 <?php
 
-
-$init_settings = array(
-    'project_name' => 'test_theme'
-);
-
-
 $base_themes = array(
     'wp-content/themes/twentyfifteen',
     'wp-content/themes/twentyseventeen',
@@ -16,6 +10,33 @@ $base_plugins = array(
     'wp-content/plugins/akismet',
     'wp-content/plugins/hello.php'
 );
+
+
+$options = getopt("f:i::");
+
+
+$config_json = file_get_contents("config.json");
+
+$config = json_decode($config_json, true);
+
+if (isset($options['f'])) {
+    $config['project_name'] = $options['f'];
+
+    create_project_folder($config);
+
+}
+else if (isset($options['i'])) {
+    dowload_wp();
+    extract_wp();
+    delete_wp_archive();
+    delete_base_themes($base_themes);
+    delete_base_plugins($base_plugins);
+
+    download_starter_theme();
+    extract_starter_theme($config);
+    delete_starter_theme_archive();
+}
+
 
 
 function dowload_wp()
@@ -56,10 +77,10 @@ function download_starter_theme()
     system('curl -L -o wp-starter-theme.zip https://github.com/lemehovskiy/wp-starter-theme/archive/master.zip');
 }
 
-function extract_starter_theme($init_settings)
+function extract_starter_theme($config)
 {
-    system('mkdir -p wp-content/themes/' . $init_settings['project_name']);
-    system('tar -xvf wp-starter-theme.zip --strip 1 --directory wp-content/themes/' . $init_settings['project_name']);
+    system('mkdir -p wp-content/themes/' . $config['project_name']);
+    system('tar -xvf wp-starter-theme.zip --strip 1 --directory wp-content/themes/' . $config['project_name']);
 }
 
 function delete_starter_theme_archive()
@@ -67,14 +88,28 @@ function delete_starter_theme_archive()
     system('rm wp-starter-theme.zip');
 }
 
+function create_project_folder($config)
+{
 
-//dowload_wp();
-//extract_wp();
-//delete_wp_archive();
-//delete_base_themes($base_themes);
-//delete_base_plugins($base_plugins);
-//
-//
-//download_starter_theme();
-//extract_starter_theme($init_settings);
-//delete_starter_theme_archive();
+    $path = '../' . $config['project_name'];
+
+    if (is_dir($path)) {
+        throw new \RuntimeException(sprintf('Unable to create the %s directory', $path));
+    } else {
+
+        //create project folder
+        system('mkdir -p ' . $path);
+
+        //create config file
+        $fp = fopen($path . '/config.json', 'w');
+        fwrite($fp, json_encode($config, JSON_PRETTY_PRINT));
+        fclose($fp);
+
+        //copy src files
+        system('cp -r wp-init-src '. $path);
+
+        //copy init file
+        system('cp -r wp-init.php '. $path);
+    }
+
+}
