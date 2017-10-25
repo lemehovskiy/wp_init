@@ -22,6 +22,10 @@ else if (isset($options['i'])) {
     download_starter_theme($config);
 
     install_plugins($config);
+
+    if (isset($options['c'])) {
+        remove_wp_init();
+    }
 }
 
 else if (isset($options['c'])) {
