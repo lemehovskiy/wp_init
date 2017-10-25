@@ -14,21 +14,17 @@ if (isset($options['f'])) {
 
 }
 else if (isset($options['i'])) {
-    dowload_wp();
-    extract_wp();
-    delete_wp_archive();
 
-    remove_files($config);
+    dowload_wp_core();
 
-    download_starter_theme();
-    extract_starter_theme($config);
-    delete_starter_theme_archive();
+    remove_core_files($config);
+
+    download_starter_theme($config);
 
     install_plugins($config);
 }
 
 else {
-    remove_files($config);
 
 }
 
@@ -56,25 +52,20 @@ function install_plugins($config){
 }
 
 
-function dowload_wp()
+function dowload_wp_core()
 {
+    //download
     system('curl -L -o latest.zip https://wordpress.org/latest.zip');
 
-}
-
-
-function extract_wp()
-{
+    //extract
     system('tar -xvf latest.zip --strip 1');
-}
 
-function delete_wp_archive()
-{
+    //remove archive
     system('rm latest.zip');
 }
 
 
-function remove_files($config)
+function remove_core_files($config)
 {
     foreach ($config['remove_files'] as $file) {
         system('rm -rf ' . $file);
@@ -83,21 +74,20 @@ function remove_files($config)
 
 
 
-function download_starter_theme()
+function download_starter_theme($config)
 {
+    //download
     system('curl -L -o wp-starter-theme.zip https://github.com/lemehovskiy/wp-starter-theme/archive/master.zip');
-}
 
-function extract_starter_theme($config)
-{
+    //extract
     system('mkdir -p wp-content/themes/' . $config['project_name']);
     system('tar -xvf wp-starter-theme.zip --strip 1 --directory wp-content/themes/' . $config['project_name']);
+
+    //remove archive
+    system('rm wp-starter-theme.zip');
+
 }
 
-function delete_starter_theme_archive()
-{
-    system('rm wp-starter-theme.zip');
-}
 
 function create_project_folder($config)
 {
