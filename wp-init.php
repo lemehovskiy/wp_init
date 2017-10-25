@@ -1,6 +1,6 @@
 <?php
 
-$options = getopt("f:i::");
+$options = getopt("f:i::c::");
 
 
 $config_json = file_get_contents("wp-init-config.json");
@@ -22,6 +22,10 @@ else if (isset($options['i'])) {
     download_starter_theme($config);
 
     install_plugins($config);
+}
+
+else if (isset($options['c'])) {
+    remove_wp_init();
 }
 
 else {
@@ -80,8 +84,8 @@ function download_starter_theme($config)
     system('curl -L -o wp-starter-theme.zip https://github.com/lemehovskiy/wp-starter-theme/archive/master.zip');
 
     //extract
-    system('mkdir -p wp-content/themes/' . $config['project_name']);
-    system('tar -xvf wp-starter-theme.zip --strip 1 --directory wp-content/themes/' . $config['project_name']);
+    system('mkdir -p wp-content/themes/' . $config['project_name'] .'-theme');
+    system('tar -xvf wp-starter-theme.zip --strip 1 --directory wp-content/themes/' . $config['project_name'] .'-theme');
 
     //remove archive
     system('rm wp-starter-theme.zip');
@@ -113,4 +117,10 @@ function create_project_folder($config)
         system('cp -r wp-init.php '. $path);
     }
 
+}
+
+function remove_wp_init(){
+    system('rm -rf wp-init.php');
+    system('rm -rf wp-init-src');
+    system('rm -rf wp-init-config.json');
 }
