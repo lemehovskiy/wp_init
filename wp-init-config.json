@@ -26,6 +26,31 @@
     "wp-content/themes/twentysixteen",
     "wp-content/plugins/akismet",
     "wp-content/plugins/hello.php"
+  ],
+  "post_types": [
+    {
+      "post_type_slug": "video",
+      "post_type_name": "Videos",
+      "post_type_singular_name": "Video"
+    },
+    {
+      "post_type_slug": "news",
+      "post_type_name": "News",
+      "post_type_singular_name": "News"
+    }
+  ],
+
+  "taxonomies": [
+    {
+      "post_type_slug": "video",
+      "post_type_name": "Videos",
+      "post_type_singular_name": "Video"
+    },
+    {
+      "post_type_slug": "news",
+      "post_type_name": "News",
+      "post_type_singular_name": "News"
+    }
   ]
 
 }

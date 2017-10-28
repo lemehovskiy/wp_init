@@ -33,9 +33,29 @@ else if (isset($options['c'])) {
 }
 
 else {
-
+    create_post_types($config);
 }
 
+
+function create_post_types($config){
+
+    foreach ($config['post_types'] as $post_type){
+
+
+        $searchF  = array('{POST_TYPE_SLUG}','{POST_TYPE_NAME}','{POST_TYPE_SINGULAR_NAME}');
+        $replaceW = array($post_type['post_type_slug'], $post_type['post_type_name'], $post_type['post_type_singular_name']);
+
+        $layout_file = file_get_contents("wp-init-src/core/register_post_type.php");
+
+        $layout_file = str_replace($searchF, $replaceW, $layout_file);
+
+        $post_type_file = fopen('wp-content/themes/wp-test-project-theme/core/post_types/register_post_type_'. $post_type['post_type_slug']  .'.php', 'w');
+
+        fwrite($post_type_file, $layout_file);
+
+    }
+
+}
 
 function install_plugins($config){
     //copy local plugins
