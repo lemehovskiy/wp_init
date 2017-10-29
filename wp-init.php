@@ -1,19 +1,27 @@
 <?php
 
-$options = getopt("f:i::c::");
+$shortopts  = "";
 
+$longopts  = array(
+    "init:",
+    "install::",
+    "destroy::"
+);
+
+$options = getopt($shortopts, $longopts);
 
 $config_json = file_get_contents("wp-init-config.json");
 
 $config = json_decode($config_json, true);
 
-if (isset($options['f'])) {
-    $config['project_name'] = $options['f'];
+
+if (isset($options['init'])) {
+    $config['project_name'] = $options['init'];
 
     create_project_folder($config);
 
 }
-else if (isset($options['i'])) {
+else if (isset($options['install'])) {
 
     dowload_wp_core();
 
@@ -23,15 +31,15 @@ else if (isset($options['i'])) {
 
     install_plugins($config);
 
-    include_taxonomies_to_core($config);
-    include_post_types_to_core($config);
+    create_post_types($config);
+    create_taxonomies($config);
 
-    if (isset($options['c'])) {
+    if (isset($options['destroy'])) {
         remove_wp_init();
     }
 }
 
-else if (isset($options['c'])) {
+else if (isset($options['destroy'])) {
     remove_wp_init();
 }
 
@@ -51,9 +59,9 @@ function include_taxonomies_to_core($config){
 
     }
 
-    $file = file_get_contents("wp-content/themes/wp-test-project-theme/core/core.php");
+    $file = file_get_contents("wp-content/themes/". $config['project_name'] ."-theme/core/core.php");
     $file = str_replace('// TAXONOMIES', $taxonomy_path_string, $file);
-    file_put_contents("wp-content/themes/wp-test-project-theme/core/core.php", $file);
+    file_put_contents("wp-content/themes/". $config['project_name'] ."-theme/core/core.php", $file);
 
 }
 
@@ -68,9 +76,9 @@ function include_post_types_to_core($config){
 
     }
 
-    $file = file_get_contents("wp-content/themes/wp-test-project-theme/core/core.php");
+    $file = file_get_contents("wp-content/themes/". $config['project_name'] ."-theme/core/core.php");
     $file = str_replace('// POST TYPES', $post_type_path_string, $file);
-    file_put_contents("wp-content/themes/wp-test-project-theme/core/core.php", $file);
+    file_put_contents("wp-content/themes/". $config['project_name'] ."-theme/core/core.php", $file);
 
 }
 
@@ -100,11 +108,13 @@ function create_taxonomies($config){
 
         $layout_file = str_replace($searchF, $replaceW, $layout_file);
 
-        $taxonomy_file = fopen('wp-content/themes/wp-test-project-theme/core/taxonomies/register_taxonomy_'. $taxonomy_slug_underscore  .'.php', 'w');
+        $taxonomy_file = fopen('wp-content/themes/' . $config['project_name'] .'-theme/core/taxonomies/register_taxonomy_'. $taxonomy_slug_underscore  .'.php', 'w');
 
         fwrite($taxonomy_file, $layout_file);
 
     }
+
+    include_taxonomies_to_core($config);
 
 }
 
@@ -132,11 +142,13 @@ function create_post_types($config){
 
         $layout_file = str_replace($searchF, $replaceW, $layout_file);
 
-        $post_type_file = fopen('wp-content/themes/wp-test-project-theme/core/post_types/register_post_type_'. $post_type_slug_underscore  .'.php', 'w');
+        $post_type_file = fopen('wp-content/themes/'. $config['project_name'] .'-theme/core/post_types/register_post_type_'. $post_type_slug_underscore  .'.php', 'w');
 
         fwrite($post_type_file, $layout_file);
 
     }
+
+    include_post_types_to_core($config);
 
 }
 

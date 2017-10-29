@@ -1,5 +1,5 @@
 {
-  "project_name": "wp-test-project",
+  "project_name": "wp-project",
   "local-plugins": {
     "acf-repeater": {
       "path": "wp-init-src/plugins/acf-repeater",
