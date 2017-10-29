@@ -1,6 +1,6 @@
 <?php
 
-function register_post_type_{POST_TYPE_SLUG}() {
+function register_post_type_{POST_TYPE_SLUG_UNDERSCORE}() {
 
     register_post_type( '{POST_TYPE_SLUG}',
         array(
@@ -20,4 +20,4 @@ function register_post_type_{POST_TYPE_SLUG}() {
     );
 }
 
-add_action( 'init', 'register_post_type_{POST_TYPE_SLUG}' );
+add_action( 'init', 'register_post_type_{POST_TYPE_SLUG_UNDERSCORE}' );

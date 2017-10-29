@@ -34,22 +34,69 @@ else if (isset($options['c'])) {
 
 else {
     create_post_types($config);
+    create_taxonomies($config);
 }
 
+
+function create_taxonomies($config){
+
+    foreach ($config['taxonomies'] as $taxonomy){
+
+        $taxonomy_slug_underscore = str_replace('-', '_', $taxonomy['taxonomy_slug']);
+
+        $searchF  = array(
+            '{TAXONOMY_SLUG}',
+            '{TAXONOMY_NAME}',
+            '{TAXONOMY_SINGULAR_NAME}',
+            '{ASSIGN_TO_POST_TYPE}',
+            '{TAXONOMY_SLUG_UNDERSCORE}'
+        );
+
+        $replaceW = array(
+            $taxonomy['taxonomy_slug'],
+            $taxonomy['taxonomy_name'],
+            $taxonomy['taxonomy_singular_name'],
+            $taxonomy['assign_to_post_type'],
+            $taxonomy_slug_underscore
+        );
+
+        $layout_file = file_get_contents("wp-init-src/core/register_taxonomy.php");
+
+        $layout_file = str_replace($searchF, $replaceW, $layout_file);
+
+        $taxonomy_file = fopen('wp-content/themes/wp-test-project-theme/core/taxonomies/register_taxonomy_'. $taxonomy_slug_underscore  .'.php', 'w');
+
+        fwrite($taxonomy_file, $layout_file);
+
+    }
+
+}
 
 function create_post_types($config){
 
     foreach ($config['post_types'] as $post_type){
 
+        $post_type_slug_underscore = str_replace('-', '_', $post_type['post_type_slug']);
 
-        $searchF  = array('{POST_TYPE_SLUG}','{POST_TYPE_NAME}','{POST_TYPE_SINGULAR_NAME}');
-        $replaceW = array($post_type['post_type_slug'], $post_type['post_type_name'], $post_type['post_type_singular_name']);
+        $searchF  = array(
+            '{POST_TYPE_SLUG}',
+            '{POST_TYPE_NAME}',
+            '{POST_TYPE_SINGULAR_NAME}',
+            '{POST_TYPE_SLUG_UNDERSCORE}'
+        );
+
+        $replaceW = array(
+            $post_type['post_type_slug'],
+            $post_type['post_type_name'],
+            $post_type['post_type_singular_name'],
+            $post_type_slug_underscore
+        );
 
         $layout_file = file_get_contents("wp-init-src/core/register_post_type.php");
 
         $layout_file = str_replace($searchF, $replaceW, $layout_file);
 
-        $post_type_file = fopen('wp-content/themes/wp-test-project-theme/core/post_types/register_post_type_'. $post_type['post_type_slug']  .'.php', 'w');
+        $post_type_file = fopen('wp-content/themes/wp-test-project-theme/core/post_types/register_post_type_'. $post_type_slug_underscore  .'.php', 'w');
 
         fwrite($post_type_file, $layout_file);
 
