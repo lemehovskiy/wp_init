@@ -20,12 +20,17 @@
       "install": true
     }
   },
-  "remove_files": [
+  "remove_wp_core_files": [
     "wp-content/themes/twentyfifteen",
     "wp-content/themes/twentyseventeen",
     "wp-content/themes/twentysixteen",
     "wp-content/plugins/akismet",
     "wp-content/plugins/hello.php"
+  ],
+  "remove_starter_theme_files": [
+    "core/post_types/sample.php",
+    "core/taxonomies/sample.php",
+    ".gitignore"
   ],
   "post_types": [
     {

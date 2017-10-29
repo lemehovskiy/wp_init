@@ -18,6 +18,8 @@ $config = json_decode($config_json, true);
 if (isset($options['init'])) {
     $config['project_name'] = $options['init'];
 
+
+
     create_project_folder($config);
 
 }
@@ -25,7 +27,7 @@ else if (isset($options['install'])) {
 
     dowload_wp_core();
 
-    remove_core_files($config);
+    remove_files($config['remove_wp_core_files']);
 
     download_starter_theme($config);
 
@@ -45,6 +47,21 @@ else if (isset($options['destroy'])) {
 
 else {
 
+    remove_starter_theme_files($config);
+
+}
+
+function remove_starter_theme_files($config){
+
+    $full_paths = array();
+
+    foreach ($config['remove_starter_theme_files'] as $file){
+        $full_paths[] = 'wp-content/themes/' . $config['project_name'] .'-theme/'. $file;
+    }
+
+    var_dump($full_paths);
+
+    remove_files($full_paths);
 }
 
 
@@ -188,9 +205,9 @@ function dowload_wp_core()
 }
 
 
-function remove_core_files($config)
+function remove_files($files)
 {
-    foreach ($config['remove_files'] as $file) {
+    foreach ($files as $file) {
         system('rm -rf ' . $file);
     }
 }
