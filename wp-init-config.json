@@ -1,5 +1,5 @@
 {
-  "project_name": "wp-project",
+  "project_name": null,
   "local-plugins": {
     "acf-repeater": {
       "path": "wp-init-src/plugins/acf-repeater",
@@ -44,7 +44,6 @@
       "post_type_singular_name": "News"
     }
   ],
-
   "taxonomies": [
     {
       "taxonomy_slug": "news-category",
@@ -52,5 +51,12 @@
       "taxonomy_singular_name": "News Category",
       "assign_to_post_type": "news"
     }
+  ],
+  "gitignore": [
+    ".idea",
+    "**/build",
+    "**/node_modules",
+    "**/DS_Store",
+    "wp-config.php"
   ]
 }

@@ -18,38 +18,64 @@ $config = json_decode($config_json, true);
 if (isset($options['init'])) {
     $config['project_name'] = $options['init'];
 
-
-
     create_project_folder($config);
 
 }
-else if (isset($options['install'])) {
 
-    dowload_wp_core();
+else if ($config['project_name'] != null) {
+    if (isset($options['install'])) {
 
-    remove_files($config['remove_wp_core_files']);
+        dowload_wp_core();
 
-    download_starter_theme($config);
+        remove_files($config['remove_wp_core_files']);
 
-    install_plugins($config);
+        download_starter_theme($config);
 
-    create_post_types($config);
-    create_taxonomies($config);
+        install_plugins($config);
 
-    if (isset($options['destroy'])) {
+        create_post_types($config);
+        create_taxonomies($config);
+
+        remove_starter_theme_files($config);
+
+        create_gitignore($config);
+
+        if (isset($options['destroy'])) {
+            remove_wp_init();
+        }
+    } else if (isset($options['destroy'])) {
         remove_wp_init();
+    } else {
+
     }
 }
 
-else if (isset($options['destroy'])) {
-    remove_wp_init();
+
+function create_gitignore($config){
+
+    $gitignore_string = "";
+
+    $rules_counter = 0;
+
+    foreach ($config['gitignore'] as $rule) {
+
+        if ($rules_counter++ == 0) {
+            $gitignore_string .= $rule;
+        }
+        else {
+            $gitignore_string .=  "\n" . $rule;
+        }
+
+    }
+
+    //create config file
+    $fp = fopen(".gitignore", 'w');
+    fwrite($fp, $gitignore_string);
+    fclose($fp);
+
+
 }
 
-else {
-
-    remove_starter_theme_files($config);
-
-}
 
 function remove_starter_theme_files($config){
 
@@ -58,8 +84,6 @@ function remove_starter_theme_files($config){
     foreach ($config['remove_starter_theme_files'] as $file){
         $full_paths[] = 'wp-content/themes/' . $config['project_name'] .'-theme/'. $file;
     }
-
-    var_dump($full_paths);
 
     remove_files($full_paths);
 }
