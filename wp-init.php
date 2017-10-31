@@ -40,12 +40,94 @@ else if ($config['project_name'] != null) {
 
         create_gitignore($config);
 
+        create_flexible_templates($config);
+        create_flexible_template_sections_files($config);
+
         if (isset($options['destroy'])) {
             remove_wp_init();
         }
     } else if (isset($options['destroy'])) {
         remove_wp_init();
     } else {
+
+    }
+}
+
+function create_flexible_template_sections_files($config){
+
+    foreach ($config['flexible_templates'] as $template){
+
+        foreach ($template['sections'] as $section) {
+
+            $section_class = 'section-' . str_replace('_', '-', $section);
+
+            $searchF  = array(
+                '{SECTION_CLASS}'
+            );
+
+            $replaceW = array(
+                $section_class
+            );
+
+
+            //create section templates
+            $sample_file = file_get_contents("wp-init-src/templates/section_sample.php");
+
+            $sample_file = str_replace($searchF, $replaceW, $sample_file);
+
+            $file_folder_path = 'wp-content/themes/' . $config['project_name'] .'-theme/template_parts/'. $template['slug'];
+
+            if (!is_dir($file_folder_path)) {
+                mkdir($file_folder_path, 0777, true);
+            }
+
+            $file = fopen($file_folder_path .'/section_'. $section  .'.php', 'w');
+
+            fwrite($file, $sample_file);
+
+            //create style files
+
+            $sample_file = file_get_contents("wp-init-src/sass/section_sample.scss");
+
+            $sample_file = str_replace($searchF, $replaceW, $sample_file);
+
+            $file_folder_path = 'wp-content/themes/' . $config['project_name'] .'-theme/src/css/'. $template['slug'];
+
+            if (!is_dir($file_folder_path)) {
+                mkdir($file_folder_path, 0777, true);
+            }
+
+            $file = fopen($file_folder_path .'/section_'. $section  .'.scss', 'w');
+
+            fwrite($file, $sample_file);
+        }
+
+    }
+}
+
+
+
+function create_flexible_templates($config){
+
+    foreach ($config['flexible_templates'] as $template){
+
+        $searchF  = array(
+            '{TEMPLATE_NAME}',
+            '{FLEXIBLE_FIELD_SLUG}',
+        );
+
+        $replaceW = array(
+            $template['name'],
+            $template['slug']
+        );
+
+        $sample_file = file_get_contents("wp-init-src/templates/flexible_template.php");
+
+        $sample_file = str_replace($searchF, $replaceW, $sample_file);
+
+        $file = fopen('wp-content/themes/' . $config['project_name'] .'-theme/'. $template['slug'] .'.php', 'w');
+
+        fwrite($file, $sample_file);
 
     }
 }

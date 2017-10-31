@@ -1,5 +1,5 @@
 {
-  "project_name": null,
+  "project_name": "wp-project",
   "local-plugins": {
     "acf-repeater": {
       "path": "wp-init-src/plugins/acf-repeater",
@@ -58,5 +58,25 @@
     "**/node_modules",
     "**/DS_Store",
     "wp-config.php"
+  ],
+  "flexible_templates": [
+    {
+      "name": "Page builder",
+      "slug": "page_builder",
+      "sections": [
+        "intro_1",
+        "intro_2",
+        "special_slider"
+      ]
+    },
+
+    {
+      "name": "Contact",
+      "slug": "contact",
+      "sections": [
+        "contact_1",
+        "contact_2"
+      ]
+    }
   ]
 }
