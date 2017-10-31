@@ -1,8 +1,8 @@
 <?php
 
-$shortopts  = "";
+$shortopts = "";
 
-$longopts  = array(
+$longopts = array(
     "init:",
     "install::",
     "destroy::"
@@ -15,14 +15,15 @@ $config_json = file_get_contents("wp-init-config.json");
 $config = json_decode($config_json, true);
 
 
+define("THEME_DIRECTORY", 'wp-content/themes/' . $config['project_name'] . '-theme');
+
+
 if (isset($options['init'])) {
     $config['project_name'] = $options['init'];
 
     create_project_folder($config);
 
-}
-
-else if ($config['project_name'] != null) {
+} else if ($config['project_name'] != null) {
     if (isset($options['install'])) {
 
         dowload_wp_core();
@@ -50,18 +51,20 @@ else if ($config['project_name'] != null) {
         remove_wp_init();
     } else {
 
+
     }
 }
 
-function create_flexible_template_sections_files($config){
+function create_flexible_template_sections_files($config)
+{
 
-    foreach ($config['flexible_templates'] as $template){
+    foreach ($config['flexible_templates'] as $template) {
 
         foreach ($template['sections'] as $section) {
 
             $section_class = 'section-' . str_replace('_', '-', $section);
 
-            $searchF  = array(
+            $searchF = array(
                 '{SECTION_CLASS}'
             );
 
@@ -75,13 +78,13 @@ function create_flexible_template_sections_files($config){
 
             $sample_file = str_replace($searchF, $replaceW, $sample_file);
 
-            $file_folder_path = 'wp-content/themes/' . $config['project_name'] .'-theme/template_parts/'. $template['slug'];
+            $file_folder_path = THEME_DIRECTORY . '/template_parts/' . $template['slug'];
 
             if (!is_dir($file_folder_path)) {
                 mkdir($file_folder_path, 0777, true);
             }
 
-            $file = fopen($file_folder_path .'/section_'. $section  .'.php', 'w');
+            $file = fopen($file_folder_path . '/section_' . $section . '.php', 'w');
 
             fwrite($file, $sample_file);
 
@@ -91,13 +94,13 @@ function create_flexible_template_sections_files($config){
 
             $sample_file = str_replace($searchF, $replaceW, $sample_file);
 
-            $file_folder_path = 'wp-content/themes/' . $config['project_name'] .'-theme/src/css/'. $template['slug'];
+            $file_folder_path = THEME_DIRECTORY . '/src/css/' . $template['slug'];
 
             if (!is_dir($file_folder_path)) {
                 mkdir($file_folder_path, 0777, true);
             }
 
-            $file = fopen($file_folder_path .'/section_'. $section  .'.scss', 'w');
+            $file = fopen($file_folder_path . '/section_' . $section . '.scss', 'w');
 
             fwrite($file, $sample_file);
         }
@@ -106,12 +109,12 @@ function create_flexible_template_sections_files($config){
 }
 
 
+function create_flexible_templates($config)
+{
 
-function create_flexible_templates($config){
+    foreach ($config['flexible_templates'] as $template) {
 
-    foreach ($config['flexible_templates'] as $template){
-
-        $searchF  = array(
+        $searchF = array(
             '{TEMPLATE_NAME}',
             '{FLEXIBLE_FIELD_SLUG}',
         );
@@ -125,7 +128,7 @@ function create_flexible_templates($config){
 
         $sample_file = str_replace($searchF, $replaceW, $sample_file);
 
-        $file = fopen('wp-content/themes/' . $config['project_name'] .'-theme/'. $template['slug'] .'.php', 'w');
+        $file = fopen(THEME_DIRECTORY . '/' . $template['slug'] . '.php', 'w');
 
         fwrite($file, $sample_file);
 
@@ -133,7 +136,8 @@ function create_flexible_templates($config){
 }
 
 
-function create_gitignore($config){
+function create_gitignore($config)
+{
 
     $gitignore_string = "";
 
@@ -143,9 +147,8 @@ function create_gitignore($config){
 
         if ($rules_counter++ == 0) {
             $gitignore_string .= $rule;
-        }
-        else {
-            $gitignore_string .=  "\n" . $rule;
+        } else {
+            $gitignore_string .= "\n" . $rule;
         }
 
     }
@@ -159,59 +162,63 @@ function create_gitignore($config){
 }
 
 
-function remove_starter_theme_files($config){
+function remove_starter_theme_files($config)
+{
 
     $full_paths = array();
 
-    foreach ($config['remove_starter_theme_files'] as $file){
-        $full_paths[] = 'wp-content/themes/' . $config['project_name'] .'-theme/'. $file;
+    foreach ($config['remove_starter_theme_files'] as $file) {
+        $full_paths[] = THEME_DIRECTORY . '/' . $file;
     }
 
     remove_files($full_paths);
 }
 
 
-function include_taxonomies_to_core($config){
+function include_taxonomies_to_core($config)
+{
 
     $taxonomy_path_string = "// TAXONOMIES";
 
     foreach ($config['taxonomies'] as $taxonomy) {
         $taxonomy_slug_underscore = str_replace('-', '_', $taxonomy['taxonomy_slug']);
 
-        $taxonomy_path_string .=  "\n" . 'include("taxonomies/register_taxonomy_' . $taxonomy_slug_underscore  .'.php");';
+        $taxonomy_path_string .= "\n" . 'include("taxonomies/register_taxonomy_' . $taxonomy_slug_underscore . '.php");';
 
     }
 
-    $file = file_get_contents("wp-content/themes/". $config['project_name'] ."-theme/core/core.php");
+    $file = file_get_contents(THEME_DIRECTORY . "/core/core.php");
     $file = str_replace('// TAXONOMIES', $taxonomy_path_string, $file);
-    file_put_contents("wp-content/themes/". $config['project_name'] ."-theme/core/core.php", $file);
+    file_put_contents(THEME_DIRECTORY . "/core/core.php", $file);
 
 }
 
-function include_post_types_to_core($config){
+function include_post_types_to_core($config)
+{
 
     $post_type_path_string = "// POST TYPES";
 
     foreach ($config['post_types'] as $post_type) {
         $taxonomy_slug_underscore = str_replace('-', '_', $post_type['post_type_slug']);
 
-        $post_type_path_string .=  "\n" . 'include("post_types/register_post_type_' . $taxonomy_slug_underscore  .'.php");';
+        $post_type_path_string .= "\n" . 'include("post_types/register_post_type_' . $taxonomy_slug_underscore . '.php");';
 
     }
 
-    $file = file_get_contents("wp-content/themes/". $config['project_name'] ."-theme/core/core.php");
+    $file = file_get_contents(THEME_DIRECTORY . "/core/core.php");
     $file = str_replace('// POST TYPES', $post_type_path_string, $file);
-    file_put_contents("wp-content/themes/". $config['project_name'] ."-theme/core/core.php", $file);
+    file_put_contents(THEME_DIRECTORY . "/core/core.php", $file);
 
 }
 
-function create_taxonomies($config){
+function create_taxonomies($config)
+{
 
-    foreach ($config['taxonomies'] as $taxonomy){
+    foreach ($config['taxonomies'] as $taxonomy) {
 
         $taxonomy_slug_underscore = str_replace('-', '_', $taxonomy['taxonomy_slug']);
 
-        $searchF  = array(
+        $searchF = array(
             '{TAXONOMY_SLUG}',
             '{TAXONOMY_NAME}',
             '{TAXONOMY_SINGULAR_NAME}',
@@ -231,7 +238,7 @@ function create_taxonomies($config){
 
         $layout_file = str_replace($searchF, $replaceW, $layout_file);
 
-        $taxonomy_file = fopen('wp-content/themes/' . $config['project_name'] .'-theme/core/taxonomies/register_taxonomy_'. $taxonomy_slug_underscore  .'.php', 'w');
+        $taxonomy_file = fopen(THEME_DIRECTORY . '/core/taxonomies/register_taxonomy_' . $taxonomy_slug_underscore . '.php', 'w');
 
         fwrite($taxonomy_file, $layout_file);
 
@@ -241,13 +248,14 @@ function create_taxonomies($config){
 
 }
 
-function create_post_types($config){
+function create_post_types($config)
+{
 
-    foreach ($config['post_types'] as $post_type){
+    foreach ($config['post_types'] as $post_type) {
 
         $post_type_slug_underscore = str_replace('-', '_', $post_type['post_type_slug']);
 
-        $searchF  = array(
+        $searchF = array(
             '{POST_TYPE_SLUG}',
             '{POST_TYPE_NAME}',
             '{POST_TYPE_SINGULAR_NAME}',
@@ -265,7 +273,7 @@ function create_post_types($config){
 
         $layout_file = str_replace($searchF, $replaceW, $layout_file);
 
-        $post_type_file = fopen('wp-content/themes/'. $config['project_name'] .'-theme/core/post_types/register_post_type_'. $post_type_slug_underscore  .'.php', 'w');
+        $post_type_file = fopen(THEME_DIRECTORY . '/core/post_types/register_post_type_' . $post_type_slug_underscore . '.php', 'w');
 
         fwrite($post_type_file, $layout_file);
 
@@ -275,11 +283,12 @@ function create_post_types($config){
 
 }
 
-function install_plugins($config){
+function install_plugins($config)
+{
     //copy local plugins
     foreach ($config['local-plugins'] as $plugin) {
         if ($plugin['install']) {
-            system('cp -r ' . $plugin['path'] .' '. 'wp-content/plugins');
+            system('cp -r ' . $plugin['path'] . ' ' . 'wp-content/plugins');
         }
     }
 
@@ -319,15 +328,14 @@ function remove_files($files)
 }
 
 
-
 function download_starter_theme($config)
 {
     //download
     system('curl -L -o wp-starter-theme.zip https://github.com/lemehovskiy/wp-starter-theme/archive/master.zip');
 
     //extract
-    system('mkdir -p wp-content/themes/' . $config['project_name'] .'-theme');
-    system('tar -xvf wp-starter-theme.zip --strip 1 --directory wp-content/themes/' . $config['project_name'] .'-theme');
+    system('mkdir -p ' . THEME_DIRECTORY);
+    system('tar -xvf wp-starter-theme.zip --strip 1 --directory ' . THEME_DIRECTORY);
 
     //remove archive
     system('rm wp-starter-theme.zip');
@@ -353,16 +361,19 @@ function create_project_folder($config)
         fclose($fp);
 
         //copy src files
-        system('cp -r wp-init-src '. $path);
+        system('cp -r wp-init-src ' . $path);
 
         //copy init file
-        system('cp -r wp-init.php '. $path);
+        system('cp -r wp-init.php ' . $path);
     }
 
 }
 
-function remove_wp_init(){
-    system('rm -rf wp-init.php');
-    system('rm -rf wp-init-src');
-    system('rm -rf wp-init-config.json');
+function remove_wp_init()
+{
+    remove_files(array(
+        'wp-init.php',
+        'wp-init-src',
+        'wp-init-config.json'
+    ));
 }
