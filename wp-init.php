@@ -57,9 +57,24 @@ if (isset($options['init'])) {
     } else if (isset($options['destroy'])) {
         remove_wp_init();
     } else {
+        
     }
 }
 
+else {
+    
+}
+
+function create_file_by_sample($settings){
+
+    $sample_file = file_get_contents($settings['sample_file']);
+
+    $sample_file_replaced_fields = str_replace($settings['search_field'], $settings['replace_field'], $sample_file);
+
+    $create_file = fopen($settings['create_file'], 'w');
+    fwrite($create_file, $sample_file_replaced_fields);
+    
+}
 
 function create_db($config){
     $db = mysqli_connect('localhost', $config['db_user'], $config['db_password'], null, '8889', '/Applications/MAMP/tmp/mysql/mysql.sock') or die('Error connecting to MySQL server.');
@@ -99,17 +114,19 @@ function create_wp_config($config){
         $table_prefix
     );
 
-    $layout_file = file_get_contents("wp-init-src/core/wp-config-sample.php");
+    create_file_by_sample(array(
+        'sample_file' => "wp-init-src/core/wp-config-sample.php",
+        'create_file' => "wp-config.php",
+        'search_field' => $searchF,
+        'replace_field' => $replaceW
+    ));
 
-    $layout_file = str_replace($searchF, $replaceW, $layout_file);
-
-    //create config
-    $post_type_file = fopen('wp-config.php', 'w');
-    fwrite($post_type_file, $layout_file);
-
-    //create config example
-    $post_type_file = fopen('wp-config-example.php', 'w');
-    fwrite($post_type_file, $layout_file);
+    create_file_by_sample(array(
+        'sample_file' => "wp-init-src/core/wp-config-sample.php",
+        'create_file' => "wp-config-example.php",
+        'search_field' => $searchF,
+        'replace_field' => $replaceW
+    ));
 }
 
 
