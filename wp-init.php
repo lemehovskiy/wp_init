@@ -47,7 +47,7 @@ if (isset($options['init'])) {
 
         create_wp_config($config);
 
-
+        create_db($config);
 
         git_init($config);
 
@@ -57,10 +57,19 @@ if (isset($options['init'])) {
     } else if (isset($options['destroy'])) {
         remove_wp_init();
     } else {
-
     }
 }
 
+
+function create_db($config){
+    $db = mysqli_connect('localhost', $config['db_user'], $config['db_password'], null, '8889', '/Applications/MAMP/tmp/mysql/mysql.sock') or die('Error connecting to MySQL server.');
+
+    $query = 'CREATE DATABASE ' . PROJECT_NAME_UNDERSCORE;
+
+    mysqli_query($db, $query);
+
+    mysqli_close($db);
+}
 
 function create_folder($path){
     if (!is_dir($path)) {
@@ -83,7 +92,7 @@ function create_wp_config($config){
     );
 
     $replaceW = array(
-        $config['project_name'],
+        PROJECT_NAME_UNDERSCORE,
         $config['db_user'],
         $config['db_password'],
         implode("\n", $secret_keys),
