@@ -57,15 +57,22 @@ if (isset($options['init'])) {
     } else if (isset($options['destroy'])) {
         remove_wp_init();
     } else {
-        
+        create_flexible_template_sections_files($config);
     }
 }
 
 else {
-    
+
 }
 
 function create_file_by_sample($settings){
+
+    $dirname = dirname($settings['create_file']);
+
+    if (!is_dir($dirname))
+    {
+        mkdir($dirname, 0755, true);
+    }
 
     $sample_file = file_get_contents($settings['sample_file']);
 
@@ -73,7 +80,7 @@ function create_file_by_sample($settings){
 
     $create_file = fopen($settings['create_file'], 'w');
     fwrite($create_file, $sample_file_replaced_fields);
-    
+
 }
 
 function create_db($config){
@@ -175,22 +182,22 @@ function create_flexible_template_sections_files($config)
 
 
             //create section templates
-            $sample_file = file_get_contents("wp-init-src/templates/section_sample.php");
 
-            $sample_file = str_replace($searchF, $replaceW, $sample_file);
-
-            $file = fopen($template_folder_path . '/section_' . $section . '.php', 'w');
-
-            fwrite($file, $sample_file);
+            create_file_by_sample(array(
+                'sample_file' => "wp-init-src/templates/section_sample.php",
+                'create_file' => $template_folder_path . '/section_' . $section . '.php',
+                'search_field' => $searchF,
+                'replace_field' => $replaceW
+            ));
 
             //create style files
-            $sample_file = file_get_contents("wp-init-src/sass/section_sample.scss");
 
-            $sample_file = str_replace($searchF, $replaceW, $sample_file);
-
-            $file = fopen($style_folder_path . '/section_' . $section . '.scss', 'w');
-
-            fwrite($file, $sample_file);
+            create_file_by_sample(array(
+                'sample_file' => "wp-init-src/sass/section_sample.scss",
+                'create_file' => $style_folder_path . '/section_' . $section . '.scss',
+                'search_field' => $searchF,
+                'replace_field' => $replaceW
+            ));
 
             //create include style files string
             $section_style_files_include_str .= '@import "section_'. $section . '.scss";' . "\n";
@@ -220,13 +227,13 @@ function create_flexible_templates($config)
             $template['slug']
         );
 
-        $sample_file = file_get_contents("wp-init-src/templates/flexible_template.php");
 
-        $sample_file = str_replace($searchF, $replaceW, $sample_file);
-
-        $file = fopen(THEME_DIRECTORY . '/' . $template['slug'] . '.php', 'w');
-
-        fwrite($file, $sample_file);
+        create_file_by_sample(array(
+            'sample_file' => "wp-init-src/templates/flexible_template.php",
+            'create_file' => THEME_DIRECTORY . '/' . $template['slug'] . '.php',
+            'search_field' => $searchF,
+            'replace_field' => $replaceW
+        ));
 
     }
 }
@@ -330,13 +337,13 @@ function create_taxonomies($config)
             $taxonomy_slug_underscore
         );
 
-        $layout_file = file_get_contents("wp-init-src/core/register_taxonomy.php");
 
-        $layout_file = str_replace($searchF, $replaceW, $layout_file);
-
-        $taxonomy_file = fopen(THEME_DIRECTORY . '/core/taxonomies/register_taxonomy_' . $taxonomy_slug_underscore . '.php', 'w');
-
-        fwrite($taxonomy_file, $layout_file);
+        create_file_by_sample(array(
+            'sample_file' => "wp-init-src/core/register_taxonomy.php",
+            'create_file' => THEME_DIRECTORY . '/core/taxonomies/register_taxonomy_' . $taxonomy_slug_underscore . '.php',
+            'search_field' => $searchF,
+            'replace_field' => $replaceW
+        ));
 
     }
 
@@ -365,13 +372,12 @@ function create_post_types($config)
             $post_type_slug_underscore
         );
 
-        $layout_file = file_get_contents("wp-init-src/core/register_post_type.php");
-
-        $layout_file = str_replace($searchF, $replaceW, $layout_file);
-
-        $post_type_file = fopen(THEME_DIRECTORY . '/core/post_types/register_post_type_' . $post_type_slug_underscore . '.php', 'w');
-
-        fwrite($post_type_file, $layout_file);
+        create_file_by_sample(array(
+            'sample_file' => "wp-init-src/core/register_post_type.php",
+            'create_file' => THEME_DIRECTORY . '/core/post_types/register_post_type_' . $post_type_slug_underscore . '.php',
+            'search_field' => $searchF,
+            'replace_field' => $replaceW
+        ));
 
     }
 
