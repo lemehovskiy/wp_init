@@ -45,9 +45,11 @@ if (isset($options['init'])) {
         create_flexible_templates($config);
         create_flexible_template_sections_files($config);
 
-        git_init($config);
-
         create_wp_config($config);
+
+
+
+        git_init($config);
 
         if (isset($options['destroy'])) {
             remove_wp_init();
@@ -55,7 +57,7 @@ if (isset($options['init'])) {
     } else if (isset($options['destroy'])) {
         remove_wp_init();
     } else {
-        
+
     }
 }
 
@@ -92,8 +94,12 @@ function create_wp_config($config){
 
     $layout_file = str_replace($searchF, $replaceW, $layout_file);
 
+    //create config
     $post_type_file = fopen('wp-config.php', 'w');
+    fwrite($post_type_file, $layout_file);
 
+    //create config example
+    $post_type_file = fopen('wp-config-example.php', 'w');
     fwrite($post_type_file, $layout_file);
 }
 
