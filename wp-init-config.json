@@ -1,5 +1,7 @@
 {
   "project_name": null,
+  "db_user": "",
+  "db_password": "",
   "local-plugins": {
     "acf-repeater": {
       "path": "wp-init-src/plugins/acf-repeater",

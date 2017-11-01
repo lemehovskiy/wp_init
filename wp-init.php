@@ -44,6 +44,8 @@ if (isset($options['init'])) {
         create_flexible_templates($config);
         create_flexible_template_sections_files($config);
 
+        git_init($config);
+
         if (isset($options['destroy'])) {
             remove_wp_init();
         }
@@ -51,8 +53,45 @@ if (isset($options['init'])) {
         remove_wp_init();
     } else {
 
+        create_wp_config($config);
 
     }
+}
+
+function create_wp_config($config){
+
+    exec('wget https://api.wordpress.org/secret-key/1.1/salt/ -q -O -', $secret_key);
+
+    $searchF = array(
+        "database_name_here",
+        "username_here",
+        "password_here",
+        "{SECRET_KEY}"
+    );
+
+    $replaceW = array(
+        $config['project_name'],
+        $config['db_user'],
+        $config['db_password'],
+        implode("\n", $secret_key)
+
+    );
+
+    $layout_file = file_get_contents("wp-init-src/core/wp-config-sample.php");
+
+    $layout_file = str_replace($searchF, $replaceW, $layout_file);
+
+    $post_type_file = fopen('wp-config.php', 'w');
+
+    fwrite($post_type_file, $layout_file);
+}
+
+
+function git_init($config){
+    system('git init');
+    system('git add .');
+    system('git commit -m "init"');
+    system('git remote add origin '. $config['project_name']);
 }
 
 function create_flexible_template_sections_files($config)
