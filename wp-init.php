@@ -16,6 +16,7 @@ $config = json_decode($config_json, true);
 
 
 define("THEME_DIRECTORY", 'wp-content/themes/' . $config['project_name'] . '-theme');
+define("PROJECT_NAME_UNDERSCORE",  str_replace('-', '_', $config['project_name']));
 
 
 if (isset($options['init'])) {
@@ -46,35 +47,45 @@ if (isset($options['init'])) {
 
         git_init($config);
 
+        create_wp_config($config);
+
         if (isset($options['destroy'])) {
             remove_wp_init();
         }
     } else if (isset($options['destroy'])) {
         remove_wp_init();
     } else {
+        
+    }
+}
 
-        create_wp_config($config);
 
+function create_folder($path){
+    if (!is_dir($path)) {
+        mkdir($path, 0777, true);
     }
 }
 
 function create_wp_config($config){
 
-    exec('wget https://api.wordpress.org/secret-key/1.1/salt/ -q -O -', $secret_key);
+    exec('wget https://api.wordpress.org/secret-key/1.1/salt/ -q -O -', $secret_keys);
+
+    $table_prefix = 'wp_' . PROJECT_NAME_UNDERSCORE . '_' . substr(uniqid(), -5)  . '_';
 
     $searchF = array(
         "database_name_here",
         "username_here",
         "password_here",
-        "{SECRET_KEY}"
+        "{SECRET_KEYS}",
+        "{TABLE_PREFIX}"
     );
 
     $replaceW = array(
         $config['project_name'],
         $config['db_user'],
         $config['db_password'],
-        implode("\n", $secret_key)
-
+        implode("\n", $secret_keys),
+        $table_prefix
     );
 
     $layout_file = file_get_contents("wp-init-src/core/wp-config-sample.php");
@@ -99,6 +110,25 @@ function create_flexible_template_sections_files($config)
 
     foreach ($config['flexible_templates'] as $template) {
 
+        $section_style_files_include_str = '';
+
+        //create style folder
+        $style_folder_path = THEME_DIRECTORY . '/src/css/' . $template['slug'];
+        create_folder($style_folder_path);
+
+        //create template folder
+        $template_folder_path = THEME_DIRECTORY . '/template_parts/' . $template['slug'];
+        create_folder($template_folder_path);
+
+        //create template style file
+        $template_style_file = fopen($style_folder_path . '/' . $template['slug'] . '.scss', 'w');
+
+        //include template style file to main style
+        $main_style_file = fopen(THEME_DIRECTORY . '/src/css/style.scss', 'a');
+        fwrite($main_style_file, "\n". '@import "' . $template['slug'] . '/' . $template['slug'] .'.scss";');
+        fclose($main_style_file);
+
+
         foreach ($template['sections'] as $section) {
 
             $section_class = 'section-' . str_replace('_', '-', $section);
@@ -117,32 +147,27 @@ function create_flexible_template_sections_files($config)
 
             $sample_file = str_replace($searchF, $replaceW, $sample_file);
 
-            $file_folder_path = THEME_DIRECTORY . '/template_parts/' . $template['slug'];
-
-            if (!is_dir($file_folder_path)) {
-                mkdir($file_folder_path, 0777, true);
-            }
-
-            $file = fopen($file_folder_path . '/section_' . $section . '.php', 'w');
+            $file = fopen($template_folder_path . '/section_' . $section . '.php', 'w');
 
             fwrite($file, $sample_file);
 
             //create style files
-
             $sample_file = file_get_contents("wp-init-src/sass/section_sample.scss");
 
             $sample_file = str_replace($searchF, $replaceW, $sample_file);
 
-            $file_folder_path = THEME_DIRECTORY . '/src/css/' . $template['slug'];
-
-            if (!is_dir($file_folder_path)) {
-                mkdir($file_folder_path, 0777, true);
-            }
-
-            $file = fopen($file_folder_path . '/section_' . $section . '.scss', 'w');
+            $file = fopen($style_folder_path . '/section_' . $section . '.scss', 'w');
 
             fwrite($file, $sample_file);
+
+            //create include style files string
+            $section_style_files_include_str .= '@import "section_'. $section . '.scss";' . "\n";
+
         }
+
+        //include sections to template style file
+        fwrite($template_style_file, $section_style_files_include_str);
+
 
     }
 }
