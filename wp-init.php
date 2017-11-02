@@ -330,9 +330,9 @@ function create_taxonomies($config)
         );
 
         $replaceW = array(
-            $taxonomy['taxonomy_slug'],
-            $taxonomy['taxonomy_name'],
-            $taxonomy['taxonomy_singular_name'],
+            $taxonomy['_slug'],
+            $taxonomy['name'],
+            $taxonomy['singular_name'],
             $taxonomy['assign_to_post_type'],
             $taxonomy_slug_underscore
         );
@@ -366,9 +366,9 @@ function create_post_types($config)
         );
 
         $replaceW = array(
-            $post_type['post_type_slug'],
-            $post_type['post_type_name'],
-            $post_type['post_type_singular_name'],
+            $post_type['slug'],
+            $post_type['name'],
+            $post_type['singular_name'],
             $post_type_slug_underscore
         );
 

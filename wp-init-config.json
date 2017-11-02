@@ -36,21 +36,21 @@
   ],
   "post_types": [
     {
-      "post_type_slug": "press-release",
-      "post_type_name": "Press releases",
-      "post_type_singular_name": "Press release"
+      "slug": "press-release",
+      "name": "Press releases",
+      "singular_name": "Press release"
     },
     {
-      "post_type_slug": "news",
-      "post_type_name": "News",
-      "post_type_singular_name": "News"
+      "slug": "news",
+      "name": "News",
+      "singular_name": "News"
     }
   ],
   "taxonomies": [
     {
-      "taxonomy_slug": "news-category",
-      "taxonomy_name": "News Categories",
-      "taxonomy_singular_name": "News Category",
+      "slug": "news-category",
+      "name": "News Categories",
+      "singular_name": "News Category",
       "assign_to_post_type": "news"
     }
   ],
