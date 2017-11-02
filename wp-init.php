@@ -57,7 +57,7 @@ if (isset($options['init'])) {
     } else if (isset($options['destroy'])) {
         remove_wp_init();
     } else {
-        create_flexible_template_sections_files($config);
+        
     }
 }
 
