@@ -47,9 +47,9 @@ if (isset($options['init'])) {
 
         create_wp_config($config);
 
-        create_db($config);
-
         git_init($config);
+
+        create_db($config);
 
         if (isset($options['destroy'])) {
             remove_wp_init();
@@ -57,7 +57,7 @@ if (isset($options['init'])) {
     } else if (isset($options['destroy'])) {
         remove_wp_init();
     } else {
-        
+
     }
 }
 
@@ -137,11 +137,10 @@ function create_wp_config($config){
 }
 
 
-function git_init($config){
+function git_init(){
     system('git init');
     system('git add .');
     system('git commit -m "init"');
-    system('git remote add origin '. $config['project_name']);
 }
 
 function create_flexible_template_sections_files($config)
@@ -284,7 +283,7 @@ function include_taxonomies_to_core($config)
     $taxonomy_path_string = "// TAXONOMIES";
 
     foreach ($config['taxonomies'] as $taxonomy) {
-        $taxonomy_slug_underscore = str_replace('-', '_', $taxonomy['taxonomy_slug']);
+        $taxonomy_slug_underscore = str_replace('-', '_', $taxonomy['slug']);
 
         $taxonomy_path_string .= "\n" . 'include("taxonomies/register_taxonomy_' . $taxonomy_slug_underscore . '.php");';
 
@@ -302,7 +301,7 @@ function include_post_types_to_core($config)
     $post_type_path_string = "// POST TYPES";
 
     foreach ($config['post_types'] as $post_type) {
-        $taxonomy_slug_underscore = str_replace('-', '_', $post_type['post_type_slug']);
+        $taxonomy_slug_underscore = str_replace('-', '_', $post_type['slug']);
 
         $post_type_path_string .= "\n" . 'include("post_types/register_post_type_' . $taxonomy_slug_underscore . '.php");';
 
@@ -319,7 +318,7 @@ function create_taxonomies($config)
 
     foreach ($config['taxonomies'] as $taxonomy) {
 
-        $taxonomy_slug_underscore = str_replace('-', '_', $taxonomy['taxonomy_slug']);
+        $taxonomy_slug_underscore = str_replace('-', '_', $taxonomy['slug']);
 
         $searchF = array(
             '{TAXONOMY_SLUG}',
@@ -330,7 +329,7 @@ function create_taxonomies($config)
         );
 
         $replaceW = array(
-            $taxonomy['_slug'],
+            $taxonomy['slug'],
             $taxonomy['name'],
             $taxonomy['singular_name'],
             $taxonomy['assign_to_post_type'],
@@ -356,7 +355,7 @@ function create_post_types($config)
 
     foreach ($config['post_types'] as $post_type) {
 
-        $post_type_slug_underscore = str_replace('-', '_', $post_type['post_type_slug']);
+        $post_type_slug_underscore = str_replace('-', '_', $post_type['slug']);
 
         $searchF = array(
             '{POST_TYPE_SLUG}',
