@@ -65,15 +65,6 @@
         "intro_2",
         "special_slider"
       ]
-    },
-
-    {
-      "name": "Contact",
-      "slug": "contact",
-      "sections": [
-        "contact_1",
-        "contact_2"
-      ]
     }
   ]
 }

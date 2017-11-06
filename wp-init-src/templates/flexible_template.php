@@ -8,7 +8,7 @@
         <?php if (have_rows('{FLEXIBLE_FIELD_SLUG}')):
             while (have_rows('{FLEXIBLE_FIELD_SLUG}')) : the_row();
 
-                get_template_part( 'template_parts/{FLEXIBLE_FIELD_SLUG}/' . get_row_layout());
+                get_template_part( 'template_parts/{FLEXIBLE_FIELD_SLUG}/section_' . get_row_layout());
 
             endwhile;
         endif; ?>
