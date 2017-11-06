@@ -316,6 +316,10 @@ function include_post_types_to_core($config)
 function create_taxonomies($config)
 {
 
+    if (!isset($config['taxonomies'])) {
+        return;
+    }
+
     foreach ($config['taxonomies'] as $taxonomy) {
 
         $taxonomy_slug_underscore = str_replace('-', '_', $taxonomy['slug']);
@@ -353,6 +357,10 @@ function create_taxonomies($config)
 function create_post_types($config)
 {
 
+    if (!isset($config['post_types'])) {
+        return;
+    }
+    
     foreach ($config['post_types'] as $post_type) {
 
         $post_type_slug_underscore = str_replace('-', '_', $post_type['slug']);
