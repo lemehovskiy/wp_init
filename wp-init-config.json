@@ -36,11 +36,6 @@
   ],
   "post_types": [
     {
-      "slug": "press-release",
-      "name": "Press releases",
-      "singular_name": "Press release"
-    },
-    {
       "slug": "news",
       "name": "News",
       "singular_name": "News"
