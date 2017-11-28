@@ -104,6 +104,12 @@ function create_folder($path){
 
 function create_style_file($config){
 
+    $project_name = $config['project_slug'];
+
+    if ($config['project_name'] != null) {
+        $project_name = $config['project_name'];
+    }
+
     $searchF = array(
         "{THEME_NAME}",
         "{AUTHOR}",
@@ -112,8 +118,8 @@ function create_style_file($config){
     );
 
     $replaceW = array(
-        $config['project_slug'],
-        $config['project_slug'],
+        $project_name,
+        $project_name,
         $config['project_description'],
         $config['project_slug'],
     );
