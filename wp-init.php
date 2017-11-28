@@ -15,16 +15,16 @@ $config_json = file_get_contents("wp-init-config.json");
 $config = json_decode($config_json, true);
 
 
-define("THEME_DIRECTORY", 'wp-content/themes/' . $config['project_name'] . '-theme');
-define("PROJECT_NAME_UNDERSCORE",  str_replace('-', '_', $config['project_name']));
+define("THEME_DIRECTORY", 'wp-content/themes/' . $config['project_slug'] . '-theme');
+define("PROJECT_SLUG_UNDERSCORE",  str_replace('-', '_', $config['project_slug']));
 
 
 if (isset($options['init'])) {
-    $config['project_name'] = $options['init'];
+    $config['project_slug'] = $options['init'];
 
     create_project_folder($config);
 
-} else if ($config['project_name'] != null) {
+} else if ($config['project_slug'] != null) {
     if (isset($options['install'])) {
 
         dowload_wp_core();
@@ -46,6 +46,8 @@ if (isset($options['init'])) {
         create_flexible_template_sections_files($config);
 
         create_wp_config($config);
+
+        create_style_file($config);
 
         git_init($config);
 
@@ -86,7 +88,7 @@ function create_file_by_sample($settings){
 function create_db($config){
     $db = mysqli_connect('localhost', $config['db_user'], $config['db_password'], null, '8889', '/Applications/MAMP/tmp/mysql/mysql.sock') or die('Error connecting to MySQL server.');
 
-    $query = 'CREATE DATABASE ' . PROJECT_NAME_UNDERSCORE;
+    $query = 'CREATE DATABASE ' . PROJECT_SLUG_UNDERSCORE;
 
     mysqli_query($db, $query);
 
@@ -99,11 +101,37 @@ function create_folder($path){
     }
 }
 
+
+function create_style_file($config){
+
+    $searchF = array(
+        "{THEME_NAME}",
+        "{AUTHOR}",
+        "{DESCRIPTION}",
+        "{TEXT_DOMAIN}"
+    );
+
+    $replaceW = array(
+        $config['project_slug'],
+        $config['project_slug'],
+        $config['project_description'],
+        $config['project_slug'],
+    );
+
+    create_file_by_sample(array(
+        'sample_file' => "wp-init-src/other/style.css",
+        'create_file' => THEME_DIRECTORY . '/' . "style.css",
+        'search_field' => $searchF,
+        'replace_field' => $replaceW
+    ));
+
+}
+
 function create_wp_config($config){
 
     exec('wget https://api.wordpress.org/secret-key/1.1/salt/ -q -O -', $secret_keys);
 
-    $table_prefix = 'wp_' . PROJECT_NAME_UNDERSCORE . '_' . substr(uniqid(), -5)  . '_';
+    $table_prefix = 'wp_' . PROJECT_SLUG_UNDERSCORE . '_' . substr(uniqid(), -5)  . '_';
 
     $searchF = array(
         "database_name_here",
@@ -114,7 +142,7 @@ function create_wp_config($config){
     );
 
     $replaceW = array(
-        PROJECT_NAME_UNDERSCORE,
+        PROJECT_SLUG_UNDERSCORE,
         $config['db_user'],
         $config['db_password'],
         implode("\n", $secret_keys),
@@ -339,7 +367,7 @@ function create_taxonomies($config)
             $taxonomy['singular_name'],
             $taxonomy['assign_to_post_type'],
             $taxonomy_slug_underscore,
-            $config['project_name']
+            $config['project_slug']
             
         );
 
@@ -381,7 +409,7 @@ function create_post_types($config)
             $post_type['name'],
             $post_type['singular_name'],
             $post_type_slug_underscore,
-            $config['project_name']
+            $config['project_slug']
         );
 
         create_file_by_sample(array(
@@ -460,7 +488,7 @@ function download_starter_theme($config)
 function create_project_folder($config)
 {
 
-    $path = '../' . $config['project_name'];
+    $path = '../' . $config['project_slug'];
 
     if (is_dir($path)) {
         throw new \RuntimeException(sprintf('Unable to create the %s directory', $path));

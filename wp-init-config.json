@@ -1,5 +1,7 @@
 {
   "project_name": null,
+  "project_slug": null,
+  "project_description": "This is our awesome personal blog WordPress theme.",
   "db_user": "",
   "db_password": "",
   "local-plugins": {

@@ -1,7 +1,7 @@
 ### Init project folder
 
 ```sh
-php wp-init.php --init {PROJECT_NAME_SLUG}
+php wp-init.php --init {PROJECT_SLUG}
 ```
 
 ### Install
