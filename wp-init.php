@@ -329,7 +329,8 @@ function create_taxonomies($config)
             '{TAXONOMY_NAME}',
             '{TAXONOMY_SINGULAR_NAME}',
             '{ASSIGN_TO_POST_TYPE}',
-            '{TAXONOMY_SLUG_UNDERSCORE}'
+            '{TAXONOMY_SLUG_UNDERSCORE}',
+            '{TEXT_DOMAIN}'
         );
 
         $replaceW = array(
@@ -337,7 +338,9 @@ function create_taxonomies($config)
             $taxonomy['name'],
             $taxonomy['singular_name'],
             $taxonomy['assign_to_post_type'],
-            $taxonomy_slug_underscore
+            $taxonomy_slug_underscore,
+            $config['project_name']
+            
         );
 
 
@@ -369,14 +372,16 @@ function create_post_types($config)
             '{POST_TYPE_SLUG}',
             '{POST_TYPE_NAME}',
             '{POST_TYPE_SINGULAR_NAME}',
-            '{POST_TYPE_SLUG_UNDERSCORE}'
+            '{POST_TYPE_SLUG_UNDERSCORE}',
+            '{TEXT_DOMAIN}'
         );
 
         $replaceW = array(
             $post_type['slug'],
             $post_type['name'],
             $post_type['singular_name'],
-            $post_type_slug_underscore
+            $post_type_slug_underscore,
+            $config['project_name']
         );
 
         create_file_by_sample(array(
