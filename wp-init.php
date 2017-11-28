@@ -121,7 +121,7 @@ function create_style_file($config){
         $project_name,
         $project_name,
         $config['project_description'],
-        $config['project_slug'],
+        $config['project_slug'] . '-theme',
     );
 
     create_file_by_sample(array(
@@ -373,7 +373,7 @@ function create_taxonomies($config)
             $taxonomy['singular_name'],
             $taxonomy['assign_to_post_type'],
             $taxonomy_slug_underscore,
-            $config['project_slug']
+            $config['project_slug'] . '-theme'
             
         );
 
@@ -415,7 +415,7 @@ function create_post_types($config)
             $post_type['name'],
             $post_type['singular_name'],
             $post_type_slug_underscore,
-            $config['project_slug']
+            $config['project_slug'] . '-theme'
         );
 
         create_file_by_sample(array(
