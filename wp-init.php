@@ -185,7 +185,7 @@ function create_flexible_template_sections_files($config)
         $section_style_files_include_str = '';
 
         //create style folder
-        $style_folder_path = THEME_DIRECTORY . '/src/css/' . $template['slug'];
+        $style_folder_path = THEME_DIRECTORY . '/src/sass/' . $template['slug'];
         create_folder($style_folder_path);
 
         //create template folder
