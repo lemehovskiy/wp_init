@@ -4,6 +4,8 @@
   "project_description": "This is our awesome personal blog WordPress theme.",
   "db_user": "",
   "db_password": "",
+  "build_system": "webpack",
+
   "local-plugins": {
     "acf-repeater": {
       "path": "wp-init-src/plugins/acf-repeater",

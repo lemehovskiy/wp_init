@@ -478,8 +478,15 @@ function remove_files($files)
 
 function download_starter_theme($config)
 {
+
+    $theme_url = 'https://github.com/lemehovskiy/wp-starter-theme/archive/webpack-version.zip';
+
+    if ($config['build_system'] == 'gulp') {
+        $theme_url = 'https://github.com/lemehovskiy/wp-starter-theme/archive/master.zip';
+    }
+
     //download
-    system('curl -L -o wp-starter-theme.zip https://github.com/lemehovskiy/wp-starter-theme/archive/master.zip');
+    system('curl -L -o wp-starter-theme.zip ' . $theme_url);
 
     //extract
     system('mkdir -p ' . THEME_DIRECTORY);
