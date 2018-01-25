@@ -49,15 +49,15 @@ if (isset($options['init'])) {
 
         create_style_file($config);
 
-        git_init($config);
-
         create_db($config);
 
         if (isset($options['destroy'])) {
             remove_wp_init();
+            git_init();
         }
     } else if (isset($options['destroy'])) {
         remove_wp_init();
+        git_init();
     } else {
 
     }
@@ -196,7 +196,7 @@ function create_flexible_template_sections_files($config)
         $template_style_file = fopen($style_folder_path . '/' . $template['slug'] . '.scss', 'w');
 
         //include template style file to main style
-        $main_style_file = fopen(THEME_DIRECTORY . '/src/css/style.scss', 'a');
+        $main_style_file = fopen(THEME_DIRECTORY . '/src/sass/style.scss', 'a');
         fwrite($main_style_file, "\n". '@import "' . $template['slug'] . '/' . $template['slug'] .'.scss";');
         fclose($main_style_file);
 
