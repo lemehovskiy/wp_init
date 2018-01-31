@@ -67,6 +67,34 @@ else {
 
 }
 
+
+function assets_downloader($config)
+{
+
+    foreach ($config['download_assets'] as $asset) {
+
+        $full_path_to = THEME_DIRECTORY . '/' . $asset['path_to'];
+
+        //download
+        system('curl -L -o asset.zip ' . $asset['download_url']);
+
+        //create temp folder
+        system('mkdir -p assets_temp');
+
+        //extract zip
+        system('tar -xvf asset.zip -C assets_temp ' . $asset['path_from']);
+
+        //create destination path
+        system('mkdir -p ' . $full_path_to);
+
+        //copy files
+        system('cp -r assets_temp/' . $asset['path_from'] . '/ ' . $full_path_to);
+
+//        system('tar --strip-components 4 -xvf asset.zip -C ' . $full_path_to . ' ' . $asset['path_from']);
+
+    }
+}
+
 function create_file_by_sample($settings){
 
     $dirname = dirname($settings['create_file']);

@@ -70,5 +70,13 @@
         "special_slider"
       ]
     }
+  ],
+
+  "download_assets": [
+    {
+      "download_url": "https://github.com/lemehovskiy/lem_mixins/archive/master.zip",
+      "path_from": "lem_mixins-master/src/sass/lem_mixins",
+      "path_to": "src/css/lem_mixins"
+    }
   ]
 }
