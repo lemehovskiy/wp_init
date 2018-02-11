@@ -49,6 +49,7 @@ if (isset($options['init'])) {
 
         create_style_file($config);
 
+//        todo
 //        download_theme_assets($config['download_theme_assets']);
 
         create_db($config);
@@ -521,10 +522,10 @@ function remove_files($files)
 function download_starter_theme($config)
 {
 
-    $theme_url = 'https://github.com/lemehovskiy/wp-starter-theme/archive/webpack-version.zip';
+    $theme_url = 'https://github.com/lemehovskiy/wp-starter-theme/archive/master.zip';
 
     if ($config['build_system'] == 'gulp') {
-        $theme_url = 'https://github.com/lemehovskiy/wp-starter-theme/archive/master.zip';
+        $theme_url = 'https://github.com/lemehovskiy/wp-starter-theme/archive/gulp-version.zip';
     }
 
     //download
