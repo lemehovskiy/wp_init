@@ -86,7 +86,7 @@ php wp-init.php --init my-new-wp-project
   }
 ```
 
-#### 2. Fill remote plugins
+#### 3. Fill remote plugins
 
 ###### For example:
 ```json
@@ -104,7 +104,7 @@ php wp-init.php --init my-new-wp-project
   }
 ```
 
-#### 2. Remove wp core files
+#### 4. Remove wp core files
 
 ###### For example:
 ```json
@@ -119,7 +119,7 @@ php wp-init.php --init my-new-wp-project
   }
 ```
 
-#### 2. Remove starter theme files
+#### 5. Remove starter theme files
 
 ###### For example:
 ```json
@@ -132,7 +132,7 @@ php wp-init.php --init my-new-wp-project
   }
 ```
 
-#### 2. Register post types
+#### 6. Register post types
 
 ###### For example:
 ```json
@@ -152,7 +152,7 @@ php wp-init.php --init my-new-wp-project
   }
 ```
 
-#### 2. Register taxonomies
+#### 7. Register taxonomies
 
 ###### For example:
 ```json
@@ -174,7 +174,7 @@ php wp-init.php --init my-new-wp-project
   }
 ```
 
-#### 2. Gitignore rules
+#### 8. Gitignore rules
 
 ###### For example:
 ```json
@@ -189,7 +189,7 @@ php wp-init.php --init my-new-wp-project
   }
 ```
 
-#### 2. Flexible templates
+#### 9. Flexible templates
 
 ###### For example:
 ```json
