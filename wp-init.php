@@ -49,6 +49,9 @@ if (isset($options['init'])) {
 
         create_style_file($config);
 
+//        todo
+//        download_theme_assets($config['download_theme_assets']);
+
         create_db($config);
 
         if (isset($options['destroy'])) {
@@ -66,6 +69,46 @@ if (isset($options['init'])) {
 else {
 
 }
+
+
+function download_theme_assets($assets){
+    downloader($assets);
+}
+
+function downloader($assets)
+{
+
+    foreach ($assets as $asset) {
+
+        $full_path_to = str_replace("{THEME_DIRECTORY}", THEME_DIRECTORY, $asset['path_to']);
+
+        $full_dir_from = dirname($asset['path_from']);
+        $full_dir_to = dirname($full_path_to);
+
+        //download
+        system('curl -L -o asset.zip ' . $asset['download_url']);
+
+        //create temp folder
+        system('mkdir -p downloads_temp');
+
+        //extract zip
+        system('tar -xvf asset.zip -C downloads_temp ' . $asset['path_from']);
+
+        //create destination path
+        system('mkdir -p ' . $full_dir_to);
+
+        //copy files
+        system('cp -r downloads_temp/' . $full_dir_from . '/ ' . $full_dir_to);
+
+        //remove temp folder, archive
+        remove_files(array(
+            'downloads_temp',
+            'asset.zip'
+        ));
+    }
+}
+
+
 
 function create_file_by_sample($settings){
 
@@ -479,10 +522,10 @@ function remove_files($files)
 function download_starter_theme($config)
 {
 
-    $theme_url = 'https://github.com/lemehovskiy/wp-starter-theme/archive/webpack-version.zip';
+    $theme_url = 'https://github.com/lemehovskiy/wp-starter-theme/archive/master.zip';
 
     if ($config['build_system'] == 'gulp') {
-        $theme_url = 'https://github.com/lemehovskiy/wp-starter-theme/archive/master.zip';
+        $theme_url = 'https://github.com/lemehovskiy/wp-starter-theme/archive/gulp-version.zip';
     }
 
     //download
