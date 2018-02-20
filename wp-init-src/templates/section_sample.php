@@ -1,3 +1,3 @@
-<div class="{SECTION_CLASS}">
+<section class="{SECTION_CLASS}">
 
-</div>
+</section>
