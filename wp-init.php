@@ -131,7 +131,7 @@ function create_file_by_sample($settings){
 function create_db($config){
     $db = mysqli_connect('localhost', $config['db_user'], $config['db_password'], null, '8889', '/Applications/MAMP/tmp/mysql/mysql.sock') or die('Error connecting to MySQL server.');
 
-    $query = 'CREATE DATABASE ' . PROJECT_SLUG_UNDERSCORE;
+    $query = 'CREATE DATABASE ' . $config['project_slug'];
 
     mysqli_query($db, $query);
 
