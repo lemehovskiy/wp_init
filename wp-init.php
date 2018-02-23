@@ -187,7 +187,8 @@ function create_wp_config($config){
         "username_here",
         "password_here",
         "{SECRET_KEYS}",
-        "{TABLE_PREFIX}"
+        "{TABLE_PREFIX}",
+        "{project-slug}"
     );
 
     $replaceW = array(
@@ -195,7 +196,8 @@ function create_wp_config($config){
         $config['db_user'],
         $config['db_password'],
         implode("\n", $secret_keys),
-        $table_prefix
+        $table_prefix,
+        $config['project_slug']
     );
 
     create_file_by_sample(array(
