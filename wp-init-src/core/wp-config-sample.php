@@ -74,6 +74,9 @@ $table_prefix  = '{TABLE_PREFIX}';
  *
  * @link https://codex.wordpress.org/Debugging_in_WordPress
  */
+
+define('WPCF7_AUTOP', false );
+
 define('WP_DEBUG', false);
 
 /* That's all, stop editing! Happy blogging. */
